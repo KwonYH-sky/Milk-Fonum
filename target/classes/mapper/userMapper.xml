@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.milk.mapper.userMapper">
+
+	<resultMap type="com.milk.myweb.vo.UserVo" id="userSelectRM">
+		<result property="u_id" column="ID" />
+		<result property="u_password" column="pw" />
+		<result property="u_name" column="name" />
+		<result property="u_email" column="email" />
+		<result property="u_sex" column="sex" />
+		<result property="u_birhday" column="birthday" />
+		<result property="u_phonenumber" column="phonenumber" />
+		<result property="u_regdate" column="regdate" />
+		<result property="u_latestlogindate" column="latestlogindate" />
+		<result property="u_recommend_active_time"
+			column="recommend_active_time" />
+	</resultMap>
+
+	<insert id="userRegister" parameterType="java.util.HashMap">
+		insert
+		into user
+		(ID, pw,
+		name, email, sex, birthday, phonenumber)
+		values
+		(#{id}, #{password},
+		#{name}, #{email}, #{sex}, #{birthday}, #{phone})
+	</insert>
+
+	<select id="idDuplicateCheck" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(ID)
+		from user
+		where ID = #{id}
+	</select>
+
+	<select id="login" parameterType="java.util.HashMap"
+		resultType="com.milk.myweb.vo.UserVo" resultMap="userSelectRM">
+		select *
+		from user
+		where ID = #{u_id}
+		and pw = #{u_pwd}
+	</select>
+
+	<update id="loginTimeUpdate">
+		update user
+		set latestlogindate =
+		CURRENT_TIMESTAMP
+		where ID = #{u_id}
+		and pw = #{u_pwd}
+	</update>
+
+
+
+
+</mapper>
